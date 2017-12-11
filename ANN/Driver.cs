@@ -212,18 +212,19 @@ namespace ANN
                     trainY.Add(newMatrix(outputSize, 1, random));
                 }
 
-                ann.trainANN(trainX, trainY, miniBatchSize, eta, nrOfEpochs);
+                ann.assignTrainingData(trainX, trainY);
+                ann.runAllEpochs(miniBatchSize, eta, nrOfEpochs);
             }
         }
 
-        static void testListUtils()
+        static void testListUtils(Random random)
         {
             List<int> iList = new List<int>()
             {
                 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
             };
 
-            List<int> rList = ListUtils.permute(iList);
+            List<int> rList = ListUtils.permute(iList, random);
         }
 
         static void Main(string[] args)

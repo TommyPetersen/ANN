@@ -26,14 +26,12 @@ namespace ANN
 {
     class ListUtils
     {
-        public static List<int> permute(List<int> inputList)
+        public static List<int> permute(List<int> inputList, Random random)
         {
             if (inputList == null)
             {
                 throw new Exception("ListUtils: inputList is null.");
             }
-
-            Random random = new Random();
 
             List<int> sList = new List<int>();
             for (int l = 0; l < inputList.Count; l++)

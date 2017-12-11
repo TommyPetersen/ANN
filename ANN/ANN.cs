@@ -33,12 +33,9 @@ namespace ANN
         List<Matrix> trainX = null;
         List<Matrix> trainY = null;
 
-        public void trainANN(
+        public void assignTrainingData(
             List<Matrix> _trainX, 
-            List<Matrix> _trainY, 
-            int miniBatchSize, 
-            double eta, 
-            int nrOfEpochs)
+            List<Matrix> _trainY)
         {
             if (_trainX == null || _trainY == null)
             {
@@ -60,31 +57,35 @@ namespace ANN
                     ", layerSizes.outputSize = " + layerSizes.Last<int>());
             }
 
-            if (miniBatchSize <= 0 || eta <= 0D || nrOfEpochs <= 0)
-            {
-                throw new Exception("ANN: Invalid meta parameters in trainANN:" +
-                    " miniBatchSize = " + miniBatchSize.ToString() + 
-                    ", eta = " + eta.ToString() +
-                    ", nrOfEpochs = " + nrOfEpochs.ToString());
-            }
-
             trainX = _trainX;
             trainY = _trainY;
-            runAllEpochs(miniBatchSize, eta, nrOfEpochs);
         }
 
         public void runAllEpochs(int miniBatchSize, double eta, int nrOfEpochs)
         {
-            Console.WriteLine("ANN: Number of epochs: " + nrOfEpochs);
+            if (miniBatchSize <= 0 || eta <= 0D || nrOfEpochs <= 0)
+            {
+                throw new Exception("ANN: Invalid meta parameters in runAllEpochs:" +
+                    " miniBatchSize = " + miniBatchSize.ToString() +
+                    ", eta = " + eta.ToString() +
+                    ", nrOfEpochs = " + nrOfEpochs.ToString());
+            }
+
             for (int epoch = 1; epoch <= nrOfEpochs; epoch++)
             {
-                Console.WriteLine("ANN: Epoch number: " + epoch);
                 runSingleEpoch(miniBatchSize, eta);
             }
         }
 
         public void runSingleEpoch(int miniBatchSize, double eta)
         {
+            if (miniBatchSize <= 0 || eta <= 0D)
+            {
+                throw new Exception("ANN: Invalid meta parameters in runSingleEpoch:" +
+                    " miniBatchSize = " + miniBatchSize.ToString() +
+                    ", eta = " + eta.ToString());
+            }
+
             //Permute the training set:
             List<int> iList = new List<int>();
 
@@ -93,7 +94,7 @@ namespace ANN
                 iList.Add(i);
             }
 
-            List<int> rList = ListUtils.permute(iList);
+            List<int> rList = ListUtils.permute(iList, random);
 
             List<Matrix> trainX1 = new List<Matrix>();
             List<Matrix> trainY1 = new List<Matrix>();
